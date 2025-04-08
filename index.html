@@ -266,23 +266,23 @@ dropZone.addEventListener('drop', async (e) => {
 startBtn.addEventListener('click', async () => {
   if (!uploadedImage) return;
 
-  stage.width(uploadedImage.width);
-  stage.height(uploadedImage.height);
+  const targetHeight = 512;
+  const aspectRatio = uploadedImage.width / uploadedImage.height;
+  const targetWidth = targetHeight * aspectRatio;
+
+  stage.width(targetWidth);
+  stage.height(targetHeight);
 
   const wavingImage = new WavingImage({
     image: uploadedImage,
     x: 0,
     y: 0,
-    width: uploadedImage.width,
-    height: uploadedImage.height,
+    width: targetWidth,
+    height: targetHeight,
   });
 
   wavingImage.cache();
   wavingImage.filters([WaveFilter]);
-
-  // wavingImage.waveAmplitude(10);
-  // wavingImage.waveLength(60);
-  // wavingImage.wavePeriod(1000);
 
   layer.destroyChildren(); // remove any previous image
   layer.add(wavingImage);
