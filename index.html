@@ -61,19 +61,18 @@ const WaveFilter = function (imageData) {
   // Normalize params to scale proportionally based on 150x150 reference
   const waveLength = (this.waveLength() || refWidth / 8) * (w / refWidth);
   const amplitude  = (this.waveAmplitude() || 15) * (h / refHeight);
-  const period     = this.wavePeriod() || 220;
+  const period     = this.wavePeriod() || 200;
   const shading    = this.waveShading() || 80;
   const squeeze    = (this.waveSqueeze() || 0.1) * (h / refHeight);
   const phase      = this.wavePhase();
 
-  const now = phase / period;
+  const now = 2 * Math.PI * phase / period;
 
   const originalData = new Uint8ClampedArray(data);
 
   const invW = 1 / w;
   const invWL = 1 / waveLength;
   const factor = 1 / 0.8;
-  const now1_2 = now * 1.2;
   const halfH = h * 0.5;
 
   const prePct = new Float32Array(w);
@@ -84,7 +83,7 @@ const WaveFilter = function (imageData) {
     prePct[x] = pct;
     const fx = x * invWL;
     const wave1 = Math.sin(fx - now) * 0.7;
-    const wave2 = Math.sin(fx * factor - now1_2) * 0.3;
+    const wave2 = Math.sin(fx * factor - now) * 0.3;
     const o = (wave1 + wave2) * amplitude * pct;
     preO[x] = o;
     preSlope[x] = x === 0 ? o : o - preO[x - 1];
@@ -136,7 +135,7 @@ export class WavingImage extends Konva.Image {
     this._waveAmplitude = 5; // default value
     this._waveLength = 50;   // default value
     this._wavePhase = 0;     // default value
-    this._wavePeriod = 200;  // default value
+    this._wavePeriod = 500;  // default value
     this._waveShading = 400; // default value
     this._waveSqueeze = 0;   // default value
   }
