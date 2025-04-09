@@ -1,0 +1,27 @@
+{
+  "name": "waving-flag",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alienartio/waving-flag.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alienartio/waving-flag/issues"
+  },
+  "homepage": "https://github.com/alienartio/waving-flag#readme",
+  "engines": {
+    "node": "= 22.14.0"
+  },
+  "dependencies": {
+    "canvas": "^3.1.0",
+    "konva": "^9.3.20",
+    "sharp": "^0.34.1"
+  }
+}
