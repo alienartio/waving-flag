@@ -84,7 +84,7 @@ export class WavingImage extends Konva.Image {
     this._waveAmplitude = 5; // default value
     this._waveLength = 50;   // default value
     this._wavePhase = 0;     // default value
-    this._wavePeriod = 500;  // default value
+    this._wavePeriod = 1000;  // default value
     this._waveShading = 400; // default value
     this._waveSqueeze = 0;   // default value
   }

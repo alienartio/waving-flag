@@ -40,6 +40,7 @@ async function generateFrames(inputPath, outputPath) {
     if (file.startsWith('.')) {
       continue;
     }
+    const timestamp = Date.now();
     console.log(`Started ${file}`);
     const fullPath = path.join(inputPath, file);
     const stat = await fs.stat(fullPath);
@@ -106,9 +107,9 @@ async function generateFrames(inputPath, outputPath) {
       variants: 1
     }, null, 2)));
     await promisify(exec)(`rm ${pngPath}`);
-    await promisify(exec)(`oxipng -o 4 --strip all ${spritePath}`);
+    //await promisify(exec)(`oxipng -o 4 --strip all ${spritePath}`);
 
-    console.log(`✅ Animated ${file}`);
+    console.log(`✅ Animated ${file} in ${Date.now() - timestamp}ms`);
   }
 
   console.log('🎉 All done!');
