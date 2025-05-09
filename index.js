@@ -1,11 +1,11 @@
-import fs from 'fs/promises';
-import path from 'path';
 import { createCanvas, Image, loadImage } from 'canvas';
-import sharp from 'sharp';
-import Konva from 'konva';
 import { exec } from 'child_process';
+import fs from 'fs/promises';
+import Konva from 'konva';
+import path from 'path';
+import sharp from 'sharp';
 import { promisify } from 'util';
-import { WavingImage, WaveFilter } from './wave.js';
+import { WaveFilter, WavingImage } from './wave.js';
 
 
 const FRAME_COUNT = 30;
@@ -40,6 +40,25 @@ async function generateFrames(inputPath, outputPath) {
     if (file.startsWith('.')) {
       continue;
     }
+    
+    const fileName = path.parse(file).name;
+    const outputDir = path.join(outputPath, fileName);
+    
+    // Check if output directory and sprite file already exist
+    try {
+      const outputExists = await fs.access(outputDir)
+        .then(() => fs.access(path.join(outputDir, `${fileName}.sprite.png`)))
+        .then(() => true)
+        .catch(() => false);
+      
+      if (outputExists) {
+        console.log(`Skipping ${file} - already processed`);
+        continue;
+      }
+    } catch (error) {
+      // Directory or file doesn't exist, continue processing
+    }
+    
     const timestamp = Date.now();
     console.log(`Started ${file}`);
     const fullPath = path.join(inputPath, file);
@@ -74,8 +93,6 @@ async function generateFrames(inputPath, outputPath) {
     wavingImage.filters([WaveFilter]);
     layer.add(wavingImage);
 
-    const fileName = path.parse(file).name;
-    const outputDir = path.join(outputPath, fileName);
     await fs.mkdir(outputDir, { recursive: true });
 
     for (let i = 0; i < FRAME_COUNT; i++) {
